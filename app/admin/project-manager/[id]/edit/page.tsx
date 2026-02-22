@@ -12,10 +12,10 @@ const ProjectFormPage = dynamic(
     {
         ssr: false,
         loading: () => (
-            <div className="max-w-5xl mx-auto px-6 py-8 space-y-4">
-                <Skeleton className="h-12 w-full rounded-2xl" />
-                <Skeleton className="h-[400px] w-full rounded-2xl" />
-                <Skeleton className="h-16 w-full rounded-2xl" />
+            <div className="max-w-7xl mx-auto px-6 py-8 space-y-4">
+                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-[400px] w-full rounded-xl" />
+                <Skeleton className="h-16 w-full rounded-xl" />
             </div>
         ),
     }
@@ -48,7 +48,7 @@ export default function EditProjectPage() {
         <div className="min-h-screen bg-background">
             {/* ── Page Header ────────────────────────────────────────────── */}
             <div className="border-b border-border/40 bg-gradient-to-r from-violet-500/5 via-transparent to-indigo-500/5 sticky top-0 z-30">
-                <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link
                             href="/admin/project-manager"
@@ -61,8 +61,8 @@ export default function EditProjectPage() {
                                 <Edit2 className="w-5 h-5 text-white" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-black text-foreground tracking-tight">Edit Project</h1>
-                                <p className="text-xs text-muted-foreground mt-0.5 max-w-sm truncate">
+                                <h1 className="text-2xl font-semibold text-foreground tracking-tight">Edit Project</h1>
+                                <p className="text-sm text-muted-foreground mt-0.5 max-w-sm truncate leading-relaxed">
                                     {project.title}
                                 </p>
                             </div>

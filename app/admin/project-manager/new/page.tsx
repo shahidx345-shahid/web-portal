@@ -10,10 +10,10 @@ const ProjectFormPage = dynamic(
     {
         ssr: false,
         loading: () => (
-            <div className="max-w-5xl mx-auto px-6 py-8 space-y-4">
-                <Skeleton className="h-12 w-full rounded-2xl" />
-                <Skeleton className="h-[400px] w-full rounded-2xl" />
-                <Skeleton className="h-16 w-full rounded-2xl" />
+            <div className="max-w-7xl mx-auto px-6 py-8 space-y-4">
+                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-[400px] w-full rounded-xl" />
+                <Skeleton className="h-16 w-full rounded-xl" />
             </div>
         ),
     }
@@ -24,7 +24,7 @@ export default function NewProjectPage() {
         <div className="min-h-screen bg-background">
             {/* ── Page Header ─────────────────────────────────────────────── */}
             <div className="border-b border-border/40 bg-gradient-to-r from-violet-500/5 via-transparent to-indigo-500/5 sticky top-0 z-30">
-                <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link
                             href="/admin/project-manager"
@@ -37,9 +37,9 @@ export default function NewProjectPage() {
                                 <Sparkles className="w-5 h-5 text-white" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-black text-foreground tracking-tight">Add New Project</h1>
-                                <p className="text-xs text-muted-foreground mt-0.5">
-                                    Complete all 10 sections — use the tabs to navigate.
+                                <h1 className="text-2xl font-semibold text-foreground tracking-tight">Add New Project</h1>
+                                <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">
+                                    Configure project lifecycle data and technical metadata.
                                 </p>
                             </div>
                         </div>

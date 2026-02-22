@@ -14,7 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { ChevronDown, X, Check, Search } from 'lucide-react'
+import { ChevronDown, X, Check, Search, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface FieldMultiSelectProps {
@@ -61,10 +61,12 @@ export function FieldMultiSelect({
     const isAtMax = max ? selected.length >= max : false
 
     return (
-        <div className={cn('space-y-1.5', className)}>
-            <Label htmlFor={id} className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                {label}{required && <span className="text-red-500 ml-0.5">*</span>}
-            </Label>
+        <div className={cn('space-y-2', className)}>
+            {label && (
+                <Label htmlFor={id} className="text-base font-bold text-foreground/90 block mb-2.5 px-0.5 uppercase tracking-wide">
+                    {label}{required && <span className="text-violet-500 ml-1">*</span>}
+                </Label>
+            )}
 
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
@@ -76,38 +78,39 @@ export function FieldMultiSelect({
                         aria-expanded={open}
                         aria-haspopup="listbox"
                         className={cn(
-                            'w-full min-h-10 flex items-start flex-wrap gap-1.5 text-left',
-                            'bg-background border border-border/60 rounded-xl px-3 py-2',
-                            'text-sm transition-colors outline-none',
-                            'hover:border-violet-400 dark:hover:border-violet-500',
-                            open && 'border-violet-500 ring-2 ring-violet-500/20',
+                            'w-full min-h-[48px] flex items-center flex-wrap gap-2 text-left',
+                            'bg-background border border-border/60 rounded-lg px-4 py-2.5',
+                            'text-lg transition-all duration-200 outline-none font-medium',
+                            'hover:border-violet-500/40',
+                            open && 'border-violet-500 ring-4 ring-violet-500/5',
                         )}
                     >
                         {selected.length === 0 ? (
-                            <span className="text-muted-foreground text-sm self-center py-0.5">{placeholder}</span>
+                            <span className="text-muted-foreground text-sm self-center py-1">{placeholder || "Select multiple..."}</span>
                         ) : (
-                            selected.map(s => (
-                                <motion.span
-                                    key={s}
-                                    initial={{ scale: 0.8, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    exit={{ scale: 0.8, opacity: 0 }}
-                                    className="inline-flex items-center gap-1 bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-500/20 text-[11px] font-semibold rounded-md px-2 py-0.5"
-                                >
-                                    {s}
-                                    <button
-                                        type="button"
-                                        onClick={e => removeOne(s, e)}
-                                        className="hover:text-red-500 transition-colors ml-0.5 rounded-sm"
-                                        aria-label={`Remove ${s}`}
+                            <div className="flex flex-wrap gap-1.5 py-0.5">
+                                {selected.map(s => (
+                                    <motion.span
+                                        key={s}
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        className="inline-flex items-center gap-1.5 bg-violet-500/15 text-violet-700 dark:text-violet-300 border border-violet-500/30 text-xs font-bold uppercase tracking-wider rounded-md px-2.5 py-1.5"
                                     >
-                                        <X className="w-2.5 h-2.5" />
-                                    </button>
-                                </motion.span>
-                            ))
+                                        {s}
+                                        <button
+                                            type="button"
+                                            onClick={e => removeOne(s, e)}
+                                            className="hover:text-red-500 transition-colors ml-0.5"
+                                            aria-label={`Remove ${s}`}
+                                        >
+                                            <X className="w-3.5 h-3.5" />
+                                        </button>
+                                    </motion.span>
+                                ))}
+                            </div>
                         )}
                         <ChevronDown className={cn(
-                            'w-4 h-4 text-muted-foreground ml-auto self-center flex-shrink-0 transition-transform duration-200',
+                            'w-5 h-5 text-muted-foreground ml-auto self-center flex-shrink-0 transition-transform duration-200',
                             open && 'rotate-180'
                         )} />
                     </button>
@@ -121,20 +124,41 @@ export function FieldMultiSelect({
                 >
                     <Command shouldFilter={false}>
                         {/* Search bar */}
-                        <div className="flex items-center gap-2 border-b border-border/50 px-3 py-2">
-                            <Search className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
+                        <div className="flex items-center gap-2 border-b border-border/50 px-3 py-3">
+                            <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                             <input
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
-                                placeholder="Search..."
-                                className="flex-1 text-sm bg-transparent outline-none placeholder:text-muted-foreground text-foreground"
+                                placeholder="Search or add new..."
+                                className="flex-1 text-base bg-transparent outline-none placeholder:text-muted-foreground text-foreground"
                             />
                             {search && (
                                 <button type="button" onClick={() => setSearch('')} className="text-muted-foreground hover:text-foreground">
-                                    <X className="w-3.5 h-3.5" />
+                                    <X className="w-4 h-4" />
                                 </button>
                             )}
                         </div>
+
+                        {/* Add New Quick Action */}
+                        {search && !options.find(o => o.toLowerCase() === search.toLowerCase()) && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const { addMasterItem } = require('@/lib/master-data-store')
+                                    const masterTypeMap: Record<string, any> = {
+                                        'tech-stack': 'tech_stack',
+                                        'tag-opt': 'tag'
+                                    }
+                                    const type = masterTypeMap[id] || 'tech_stack'
+                                    addMasterItem(search, type)
+                                    setSearch('')
+                                }}
+                                className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-violet-600 hover:bg-violet-500/5 transition-colors border-b border-border/30"
+                            >
+                                <Plus className="w-3.5 h-3.5" />
+                                Add &quot;{search}&quot; to System
+                            </button>
+                        )}
 
                         {/* Selected count + clear */}
                         {selected.length > 0 && (
@@ -169,24 +193,24 @@ export function FieldMultiSelect({
                                                 onSelect={() => toggle(opt)}
                                                 disabled={disabled}
                                                 className={cn(
-                                                    'flex items-center gap-3 rounded-lg px-3 py-2 cursor-pointer text-sm',
+                                                    'flex items-center gap-3 rounded-lg px-4 py-3 cursor-pointer text-base',
                                                     'aria-selected:bg-accent',
                                                     disabled && 'opacity-40 cursor-not-allowed',
-                                                    isSelected && 'bg-violet-500/5'
+                                                    isSelected && 'bg-violet-500/5 rotate-0'
                                                 )}
                                             >
                                                 <Checkbox
                                                     checked={isSelected}
                                                     className={cn(
-                                                        'rounded-[4px] border-border/60 flex-shrink-0',
+                                                        'h-5 w-5 rounded-[6px] border-border/60 flex-shrink-0 transition-all',
                                                         isSelected && 'border-violet-500 bg-violet-500 text-white'
                                                     )}
                                                     aria-hidden
                                                 />
-                                                <span className={cn('flex-1 font-medium', isSelected && 'text-violet-700 dark:text-violet-300')}>
+                                                <span className={cn('flex-1 font-bold', isSelected && 'text-violet-700 dark:text-violet-300')}>
                                                     {opt}
                                                 </span>
-                                                {isSelected && <Check className="w-3.5 h-3.5 text-violet-500 flex-shrink-0" />}
+                                                {isSelected && <Check className="w-5 h-5 text-violet-500 flex-shrink-0" />}
                                             </CommandItem>
                                         )
                                     })}

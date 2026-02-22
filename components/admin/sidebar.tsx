@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useSidebar } from './sidebar-context'
-import { Home, FolderGit2, BarChart3, Settings, ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { Home, FolderGit2, BarChart3, Settings, Database, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navigation = [
@@ -42,7 +42,7 @@ export function Sidebar() {
             <motion.div
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="font-bold text-sm text-sidebar-foreground"
+              className="font-bold text-lg tracking-tight text-sidebar-foreground"
             >
               KUSME
             </motion.div>
@@ -99,8 +99,8 @@ export function Sidebar() {
                     <div className="relative z-10 flex-shrink-0">
                       <Icon
                         className={cn(
-                          'w-5 h-5 transition-colors',
-                          isActive && 'text-purple-300'
+                          'w-6 h-6 transition-colors',
+                          isActive ? 'text-purple-300' : 'text-sidebar-foreground/70'
                         )}
                       />
                     </div>
@@ -109,8 +109,8 @@ export function Sidebar() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className={cn(
-                          'text-sm font-medium whitespace-nowrap relative z-10',
-                          isActive && 'font-semibold text-white'
+                          'text-lg font-medium whitespace-nowrap relative z-10',
+                          isActive ? 'font-bold text-white' : 'text-white/80'
                         )}
                       >
                         {item.name}
@@ -145,10 +145,10 @@ export function Sidebar() {
           </div>
           {(!isCollapsed || isMobile) && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-sidebar-foreground truncate">
+              <p className="text-base font-bold text-sidebar-foreground truncate">
                 Kay Hackett
               </p>
-              <p className="text-xs text-sidebar-foreground/60">Admin</p>
+              <p className="text-sm font-medium text-sidebar-foreground/60 uppercase tracking-widest">Admin</p>
             </div>
           )}
         </div>
